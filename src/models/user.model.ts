@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export type User = InferSchemaType<typeof userSchema>;
+export type TUser = InferSchemaType<typeof userSchema>;
 const User = mongoose.model('user', userSchema);
 
 export default User;

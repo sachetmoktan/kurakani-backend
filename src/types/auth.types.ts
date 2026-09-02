@@ -1,4 +1,4 @@
-export type JWTPayload = {
+export type TJWTPayload = {
   userId: string;
   email: string;
 };

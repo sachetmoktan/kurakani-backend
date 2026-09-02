@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt, { type SignOptions } from 'jsonwebtoken';
-import type { JWTPayload } from '../types/auth.types.js';
+import type { TJWTPayload } from '../types/auth.types.js';
 
 export const passwordHasher = async (password: string) => {
   const bcrypt_salt = process.env.BCRYPT_SALT || 10;
@@ -23,7 +23,7 @@ export const hashedPasswordCompare = async (password1: string, password2: string
   }
 };
 
-export const generateJWTToken = (payload: JWTPayload) => {
+export const generateJWTToken = (payload: TJWTPayload) => {
   const secret = process.env.JWT_SECRET_KEY!;
   const expiresIn = process.env.TOKEN_EXPIRES as SignOptions['expiresIn'];
   return jwt.sign(payload, secret, { ...(expiresIn && { expiresIn }) });

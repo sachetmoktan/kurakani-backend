@@ -6,6 +6,8 @@ import { handleCreateUser, handleLoginUser } from './controllers/user.controller
 import checkAuth from './middlewares/auth.middleware.js';
 import { globalErrorHandler } from './middlewares/error.middleware.js';
 import userRouter from './routes/user.route.js';
+import { loginSchema, signupSchema } from './schema/user.schema.js';
+import { validate } from './middlewares/validate.middleware.js';
 dotenv.config();
 
 const app = express();
@@ -24,8 +26,8 @@ app.get('/', (req, res) => {
 });
 
 // Public routes
-app.post('/signup', handleCreateUser);
-app.post('/login', handleLoginUser);
+app.post('/signup', validate(signupSchema), handleCreateUser);
+app.post('/login', validate(loginSchema), handleLoginUser);
 // Protected routes
 app.use(checkAuth);
 app.use('/users', userRouter);
