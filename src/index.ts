@@ -4,6 +4,7 @@ import express from 'express';
 import connectMongoDB from './config/connect_db.js';
 import { handleCreateUser, handleLoginUser } from './controllers/user.controller.js';
 import checkAuth from './middlewares/auth.middleware.js';
+import { globalErrorHandler } from './middlewares/error.middleware.js';
 import userRouter from './routes/user.route.js';
 dotenv.config();
 
@@ -23,11 +24,14 @@ app.get('/', (req, res) => {
 });
 
 // Public routes
-userRouter.post('/signup', handleCreateUser);
-userRouter.post('/login', handleLoginUser);
+app.post('/signup', handleCreateUser);
+app.post('/login', handleLoginUser);
 // Protected routes
-userRouter.use(checkAuth);
+app.use(checkAuth);
 app.use('/users', userRouter);
+
+// Global error handler
+app.use(globalErrorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on port:${PORT}`);

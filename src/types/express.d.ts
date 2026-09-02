@@ -5,6 +5,9 @@ declare global {
     interface Request {
       user?: User;
     }
+    interface Response {
+      success: (data?: unknown, message?: string, statusCode?: number) => Response;
+    }
   }
 }
 
