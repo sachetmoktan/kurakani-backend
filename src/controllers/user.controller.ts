@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import User from '../models/user.model.js';
-import { generateJWTToken, hashedPasswordCompare, passwordHasher } from '../service/auth.service.js';
+import { hashedPasswordCompare, passwordHasher } from '../service/auth.service.js';
 import { AppError } from '../utils/AppError.js';
 import { successResponse } from '../utils/SuccessResponse.js';
 
@@ -68,10 +68,43 @@ export const handleLoginUser = async (req: Request, res: Response, next: NextFun
       throw new AppError('Email or Password is incorrect', 400);
     }
 
-    const token = generateJWTToken({ userId: `${user._id}`, email: user.email });
+    // JWT Implementation:
+    // const token = generateJWTToken({ userId: `${user._id}`, email: user.email });
+    // return successResponse(res, { access_token: token }, 'Login Successful', 200);
 
-    return successResponse(res, { access_token: token }, 'Login Successful', 200);
+    // Session Implementation:
+    req.session.regenerate(err => {
+      if (err) {
+        throw new AppError('Could not create session', 500);
+      }
+
+      req.session.userId = user._id.toString();
+
+      req.session.save(err => {
+        if (err) {
+          throw new AppError('Could not save session', 500);
+        }
+        const data = {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          roles: user.roles,
+        };
+        return successResponse(res, data, 'Login Successful', 200);
+      });
+    });
   } catch (err) {
     next(err);
   }
+};
+
+export const handleLogoutUser = async (req: Request, res: Response, next: NextFunction) => {
+  req.session.destroy(err => {
+    if (err) {
+      throw new AppError('Could not logout', 500);
+    }
+
+    res.clearCookie('connect.sid');
+    return successResponse(res, null, 'Logout successful', 200);
+  });
 };

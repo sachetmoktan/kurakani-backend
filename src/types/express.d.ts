@@ -1,9 +1,16 @@
-import type { User } from '../service/auth.service.ts';
+import 'express-session';
+import type { TUser } from '../models/user.model.ts';
+
+declare module 'express-session' {
+  interface SessionData {
+    userId?: string;
+  }
+}
 
 declare global {
   namespace Express {
     interface Request {
-      user?: User;
+      user?: TUser;
     }
     interface Response {
       success: (data?: unknown, message?: string, statusCode?: number) => Response;

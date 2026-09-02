@@ -20,6 +20,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    roles: {
+      type: [
+        {
+          type: String,
+          enum: ['admin', 'member', 'guest'],
+        },
+      ],
+      default: ['admin'],
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true },
 );
