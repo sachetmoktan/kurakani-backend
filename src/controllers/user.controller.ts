@@ -53,7 +53,7 @@ export const handleCreateUser = async (req: Request, res: Response, next: NextFu
 };
 
 export const handleLoginUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { email, password } = req.body;
+  const { email, password } = req?.body;
   if (!email || !password) {
     throw new AppError('Email or Password is missing', 400);
   }
@@ -86,9 +86,9 @@ export const handleLoginUser = async (req: Request, res: Response, next: NextFun
         }
         const data = {
           id: user._id,
-          name: user.name,
           email: user.email,
-          roles: user.roles,
+          // name: user.name,
+          // roles: user.roles,
         };
         return successResponse(res, data, 'Login Successful', 200);
       });
@@ -107,4 +107,18 @@ export const handleLogoutUser = async (req: Request, res: Response, next: NextFu
     res.clearCookie('connect.sid');
     return successResponse(res, null, 'Logout successful', 200);
   });
+};
+
+export const handleSessionValidCheck = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.session.userId) {
+    throw new AppError('Unauthorizedd', 401);
+  }
+
+  const user = await User.findById(req.session.userId).select('-password');
+
+  if (!user) {
+    throw new AppError('Unauthorizedddd', 401);
+  }
+
+  return successResponse(res, user, 'Session Valid', 200);
 };

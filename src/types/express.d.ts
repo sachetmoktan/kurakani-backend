@@ -1,12 +1,6 @@
 import 'express-session';
 import type { TUser } from '../models/user.model.ts';
 
-declare module 'express-session' {
-  interface SessionData {
-    userId?: string;
-  }
-}
-
 declare global {
   namespace Express {
     interface Request {
