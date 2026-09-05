@@ -57,7 +57,7 @@ app.post('/logout', handleLogoutUser);
 app.get('/me', handleSessionValidCheck);
 
 // Protected routes
-// app.use(checkAuth);
+app.use(checkAuth);
 app.use(requiredRoles(ROLES.ADMIN));
 
 app.use('/users', userRouter);
