@@ -9,11 +9,33 @@ const conversationSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    unreadCount: {
+      type: Map,
+      of: Number,
+      default: {},
+    },
+
+    lastMessageDetail: {
+      content: {
+        type: String,
+        default: '',
+      },
+      senderId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        default: null,
+      },
+
+      createdAt: {
+        type: Date,
+        default: null,
+      },
+    },
   },
   { timestamps: true },
 );
 
 export type TConversation = InferSchemaType<typeof conversationSchema>;
-const Conversation = mongoose.model('conversation', conversationSchema);
+const Conversation = mongoose.model('Conversation', conversationSchema);
 
 export default Conversation;

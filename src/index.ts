@@ -22,6 +22,7 @@ import { signupSchema } from './schema/user.schema.js';
 import { initializeSocket } from './socket/index.js';
 
 import path from 'node:path';
+import conversationRouter from './routes/conversation.route.js';
 import { ROLES } from './utils/index.js';
 
 dotenv.config();
@@ -60,6 +61,7 @@ app.use(checkAuth);
 app.use(requiredRoles(ROLES.ADMIN));
 
 app.use('/users', userRouter);
+app.use('/conversations', conversationRouter);
 
 // Global error handler
 app.use(globalErrorHandler);

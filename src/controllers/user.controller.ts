@@ -85,7 +85,7 @@ export const handleLoginUser = async (req: Request, res: Response, next: NextFun
           throw new AppError('Could not save session', 500);
         }
         const data = {
-          id: user._id,
+          _id: user._id,
           email: user.email,
           // name: user.name,
           // roles: user.roles,
