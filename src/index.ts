@@ -55,12 +55,13 @@ app.post('/signup', validate(signupSchema), handleCreateUser);
 app.post('/login', handleLoginUser);
 app.post('/logout', handleLogoutUser);
 app.get('/me', handleSessionValidCheck);
+app.use('/users', userRouter);
 
 // Protected routes
 app.use(checkAuth);
 app.use(requiredRoles(ROLES.ADMIN));
 
-app.use('/users', userRouter);
+// app.use('/users', userRouter);
 app.use('/conversations', conversationRouter);
 
 // Global error handler

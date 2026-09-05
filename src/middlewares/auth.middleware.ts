@@ -29,7 +29,7 @@ const checkAuth = async (req: Request, _res: Response, next: NextFunction) => {
     req.user = user;
     next();
   } catch (error) {
-    // throw new AppError('Authentication failed', 500);
+    throw new AppError('Authentication failed', 500);
   }
 };
 
